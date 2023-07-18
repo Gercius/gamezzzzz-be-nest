@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { GamesService } from './games.service';
 import { Game } from './schemas/game.schema';
 
@@ -7,8 +7,11 @@ export class GamesController {
   constructor(private gamesService: GamesService) {}
 
   @Get()
-  async getAllGames(): Promise<Game[]> {
-    return this.gamesService.findAll();
+  async getAllGames(
+    @Query('page') page = 1,
+    @Query('pageSize') pageSize = 30,
+    ): Promise<Game[]> {
+    return this.gamesService.findAll(page, pageSize);
   }
 
   @Get(':id')
